@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_media_previous"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="12dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Emergency Contacts"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#DB2777"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="People who get alerted for you"
+                android:textColor="#6B7280"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Current Contact Card -->
+    <LinearLayout
+        android:id="@+id/contactCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headerLayout"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/card_background"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Primary Emergency Contact"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1F2937"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/sos_circle"
+                android:gravity="center"
+                android:layout_marginEnd="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvContactInitial"
+                    android:text="?"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvContactName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Not set"
+                    android:textColor="#1F2937"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/tvContactPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add a contact below"
+                    android:textColor="#6B7280"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Edit Fields -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact Name"
+            android:textColor="#374151"
+            android:textSize="13sp"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etContactName"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="e.g. Mom, Dad, Friend"
+            android:inputType="textPersonName"
+            android:background="#F9FAFB"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="15sp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+            android:textColor="#374151"
+            android:textSize="13sp"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etContactPhone"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="+91 98765 43210"
+            android:inputType="phone"
+            android:background="#F9FAFB"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="15sp"
+            android:layout_marginBottom="16dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSaveContact"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/button_gradient"
+            android:text="Save Contact"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <!-- Info note -->
+    <LinearLayout
+        android:id="@+id/infoNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contactCard"
+        android:layout_marginTop="16dp"
+        android:background="#FFF9C4"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_dialog_info"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In an emergency, this contact receives an SMS with your live location."
+            android:textColor="#374151"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- Bottom Nav -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp"
+                android:src="@android:drawable/ic_secure" android:scaleType="fitCenter"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Home" android:textColor="#9CA3AF" android:textSize="12sp"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navAlerts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp"
+                android:src="@android:drawable/ic_popup_reminder" android:scaleType="fitCenter"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Alerts" android:textColor="#9CA3AF" android:textSize="12sp"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navContacts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp"
+                android:src="@android:drawable/ic_menu_my_calendar" android:scaleType="fitCenter"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Contacts" android:textColor="#EC4899" android:textStyle="bold"
+                android:textSize="12sp" android:layout_marginTop="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
