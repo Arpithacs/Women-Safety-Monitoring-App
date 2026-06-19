@@ -1,132 +1,145 @@
 package com.example.safety_monitor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.cardview.widget.CardView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private TextView tvProfileName, tvProfileBlood, tvProfileInitial;
     private EditText etProfileName, etProfileBloodType;
-    private TextView tvProfileName, tvProfileEmail, tvProfileInitial;
-    private Switch switchShake, switchAI;
+    private SwitchCompat switchShake, switchAI;
+    private Button btnSignOut, btnToggleEditMode, btnSaveProfile;
+    private CardView cardEditProfile;
+    private ImageView btnBack;
+
+    private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        etProfileName       = findViewById(R.id.etProfileName);
-        etProfileBloodType  = findViewById(R.id.etProfileBloodType);
-        tvProfileName       = findViewById(R.id.tvProfileName);
-        tvProfileEmail      = findViewById(R.id.tvProfileEmail);
-        tvProfileInitial    = findViewById(R.id.tvProfileInitial);
-        switchShake         = findViewById(R.id.switchShake);
-        switchAI            = findViewById(R.id.switchAI);
+        mAuth = FirebaseAuth.getInstance();
+        sharedPreferences = getSharedPreferences("SafeGuardPrefs", Context.MODE_PRIVATE);
 
-        loadProfile();
+        // Display components
+        tvProfileInitial = findViewById(R.id.tvProfileInitial);
+        tvProfileName = findViewById(R.id.tvProfileName);
+        tvProfileBlood = findViewById(R.id.tvProfileBlood);
 
-        // Back button
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        // Editable hidden structural layers
+        cardEditProfile = findViewById(R.id.cardEditProfile);
+        etProfileName = findViewById(R.id.etProfileName);
+        etProfileBloodType = findViewById(R.id.etProfileBloodType);
 
-        // Save profile changes
-        findViewById(R.id.btnSaveProfile).setOnClickListener(v -> saveProfile());
+        // Action Controls
+        btnToggleEditMode = findViewById(R.id.btnToggleEditMode);
+        btnSaveProfile = findViewById(R.id.btnSaveProfile);
+        btnSignOut = findViewById(R.id.btnSignOut);
+        btnBack = findViewById(R.id.btnBack);
 
-        // Sign out
-        findViewById(R.id.btnSignOut).setOnClickListener(v -> confirmSignOut());
-    }
+        // Settings Toggles
+        switchShake = findViewById(R.id.switchShake);
+        switchAI = findViewById(R.id.switchAI);
 
-    private void loadProfile() {
-        SharedPreferences prefs = getSharedPreferences("SafetyPrefs", MODE_PRIVATE);
-        String name = prefs.getString("user_name", "");
-        String blood = prefs.getString("blood_type", "");
-        boolean shakeEnabled = prefs.getBoolean("shake_enabled", true);
-        boolean aiEnabled = prefs.getBoolean("ai_enabled", true);
+        // Load initialization profile display values
+        refreshProfileDisplay();
 
-        // Load from Firebase
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String displayName = name.isEmpty() ? user.getDisplayName() : name;
-            String email = user.getEmail() != null ? user.getEmail() : "";
+        // Load preference configuration toggles
+        switchShake.setChecked(sharedPreferences.getBoolean("shake_enabled", true));
+        switchAI.setChecked(sharedPreferences.getBoolean("ai_enabled", true));
 
-            tvProfileName.setText(displayName != null ? displayName : "User");
-            tvProfileEmail.setText(email);
+        // Back button navigation anchor
+        btnBack.setOnClickListener(v -> finish());
 
-            if (displayName != null && !displayName.isEmpty()) {
-                tvProfileInitial.setText(String.valueOf(displayName.charAt(0)).toUpperCase());
-                etProfileName.setText(displayName);
+        // Toggle form visibility mode smoothly
+        btnToggleEditMode.setOnClickListener(v -> {
+            if (cardEditProfile.getVisibility() == View.GONE) {
+                // Populate current records before unfolding layout fields
+                etProfileName.setText(sharedPreferences.getString("user_name", ""));
+                etProfileBloodType.setText(sharedPreferences.getString("blood_type", ""));
+                cardEditProfile.setVisibility(View.VISIBLE);
+                btnToggleEditMode.setText("Cancel Editing");
+            } else {
+                cardEditProfile.setVisibility(View.GONE);
+                btnToggleEditMode.setText("Edit Profile Details");
             }
-        }
+        });
 
-        if (!blood.isEmpty()) etProfileBloodType.setText(blood);
-        switchShake.setChecked(shakeEnabled);
-        switchAI.setChecked(aiEnabled);
-    }
+        // Save Profile Changes Pipeline
+        btnSaveProfile.setOnClickListener(v -> {
+            String updatedName = etProfileName.getText().toString().trim();
+            String updatedBlood = etProfileBloodType.getText().toString().trim();
 
-    private void saveProfile() {
-        String name = etProfileName.getText().toString().trim();
-        String blood = etProfileBloodType.getText().toString().trim();
+            if (updatedName.isEmpty()) {
+                Toast.makeText(this, "Name context cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if (name.isEmpty()) {
-            etProfileName.setError("Name cannot be empty");
-            return;
-        }
-
-        SharedPreferences.Editor editor = getSharedPreferences("SafetyPrefs", MODE_PRIVATE).edit();
-        editor.putString("user_name", name);
-        editor.putString("blood_type", blood);
-        editor.putBoolean("shake_enabled", switchShake.isChecked());
-        editor.putBoolean("ai_enabled", switchAI.isChecked());
-        editor.apply();
-
-        // Update displayed name
-        tvProfileName.setText(name);
-        tvProfileInitial.setText(String.valueOf(name.charAt(0)).toUpperCase());
-
-        Toast.makeText(this, "Profile updated!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void confirmSignOut() {
-        new AlertDialog.Builder(this)
-                .setTitle("Sign Out")
-                .setMessage("Are you sure you want to sign out?")
-                .setPositiveButton("Sign Out", (dialog, which) -> signOut())
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
-
-    private void signOut() {
-        // Sign out from Firebase
-        FirebaseAuth.getInstance().signOut();
-
-        // Sign out from Google
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
-        googleSignInClient.signOut().addOnCompleteListener(task -> {
-            // Clear setup flag so setup runs again on next login
-            getSharedPreferences("SafetyPrefs", MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("setup_complete", false)
+            // Commit modifications directly into SharedPreferences storage maps
+            sharedPreferences.edit()
+                    .putString("user_name", updatedName)
+                    .putString("blood_type", updatedBlood)
                     .apply();
 
-            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            // Refresh UI values and hide the edit fields out of sight
+            refreshProfileDisplay();
+            cardEditProfile.setVisibility(View.GONE);
+            btnToggleEditMode.setText("Edit Profile Details");
+            Toast.makeText(this, "Profile adjustments applied successfully!", Toast.LENGTH_SHORT).show();
         });
+
+        // Config Sensor Toggle Monitoring Actions
+        switchShake.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("shake_enabled", isChecked).apply();
+            Toast.makeText(this, "Restart tracking service to update configurations", Toast.LENGTH_SHORT).show();
+        });
+
+        switchAI.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("ai_enabled", isChecked).apply();
+            Toast.makeText(this, "Restart tracking service to update AI sound parameters", Toast.LENGTH_SHORT).show();
+        });
+
+        // Sign Out Pipeline
+        btnSignOut.setOnClickListener(v -> handleSignOut());
+    }
+
+    private void refreshProfileDisplay() {
+        String name = sharedPreferences.getString("user_name", "User Name");
+        String blood = sharedPreferences.getString("blood_type", "Unknown");
+
+        tvProfileName.setText(name);
+        tvProfileBlood.setText("Blood Type: " + (blood.isEmpty() ? "Unknown" : blood));
+
+        // Dynamically compute display asset text character marker badge
+        if (!name.isEmpty()) {
+            tvProfileInitial.setText(String.valueOf(name.charAt(0)).toUpperCase());
+        } else {
+            tvProfileInitial.setText("?");
+        }
+    }
+
+    private void handleSignOut() {
+        mAuth.signOut();
+        sharedPreferences.edit().clear().apply();
+        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

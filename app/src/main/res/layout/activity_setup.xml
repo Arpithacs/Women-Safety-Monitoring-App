@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
+    android:background="#FFF0F2"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,334 +12,350 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Header -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SafeGuard"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="#DB2777"
-            android:layout_marginTop="40dp"/>
+            android:textColor="#9B4D64"
+            android:layout_marginTop="24dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Let's set up your profile"
-            android:textColor="#6B7280"
+            android:textColor="#7A686B"
             android:textSize="16sp"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="24dp" />
 
-        <!-- Step 1: Basic Info Card -->
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
-            android:orientation="vertical"
-            android:padding="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
             android:layout_marginBottom="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your Information"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1F2937"
-                android:layout_marginBottom="16dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Full Name"
-                android:textColor="#374151"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp"/>
-
-            <EditText
-                android:id="@+id/etSetupName"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:hint="Enter your full name"
-                android:inputType="textPersonName"
-                android:background="#F9FAFB"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textSize="16sp"
-                android:layout_marginBottom="16dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blood Type (Optional)"
-                android:textColor="#374151"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp"/>
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <EditText
-                android:id="@+id/etSetupBloodType"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:hint="e.g. A+, B-, O+"
-                android:background="#F9FAFB"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textSize="16sp"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your Information"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#2F2F2F"
+                    android:layout_marginBottom="16dp"/>
 
-        <!-- Step 2: Emergency Contact Card -->
-        <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name"
+                    android:textColor="#7A686B"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="Enter your full name"
+                    android:inputType="textPersonName"
+                    android:background="@android:drawable/editbox_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blood Type (Optional)"
+                    android:textColor="#7A686B"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <EditText
+                    android:id="@+id/etBloodType"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="e.g. A+, B-, O+"
+                    android:background="@android:drawable/editbox_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
-            android:orientation="vertical"
-            android:padding="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
             android:layout_marginBottom="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Emergency Contact"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1F2937"
-                android:layout_marginBottom="4dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This person will receive an SMS alert if you're in danger"
-                android:textColor="#6B7280"
-                android:textSize="13sp"
-                android:layout_marginBottom="16dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact Name"
-                android:textColor="#374151"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp"/>
-
-            <EditText
-                android:id="@+id/etContactName"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:hint="e.g. Mom, Dad, Friend"
-                android:inputType="textPersonName"
-                android:background="#F9FAFB"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textSize="16sp"
-                android:layout_marginBottom="16dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phone Number"
-                android:textColor="#374151"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp"/>
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <EditText
-                android:id="@+id/etSetupPhone"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:hint="+91 98765 43210"
-                android:inputType="phone"
-                android:background="#F9FAFB"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textSize="16sp"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Emergency Contact"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#2F2F2F"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Step 3: Permissions Card -->
-        <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This person will receive an SMS alert if you're in danger"
+                    android:textColor="#7A686B"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Name"
+                    android:textColor="#7A686B"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <EditText
+                    android:id="@+id/etContactName"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="e.g. Mom, Dad, Friend"
+                    android:inputType="textPersonName"
+                    android:background="@android:drawable/editbox_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number"
+                    android:textColor="#7A686B"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <EditText
+                    android:id="@+id/etSetupPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="+91 98765 43210"
+                    android:inputType="phone"
+                    android:background="@android:drawable/editbox_background"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/permissionsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
-            android:orientation="vertical"
-            android:padding="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
             android:layout_marginBottom="32dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Required Permissions"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1F2937"
-                android:layout_marginBottom="4dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SafeGuard needs these to protect you"
-                android:textColor="#6B7280"
-                android:textSize="13sp"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- Location Permission Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@android:drawable/ic_menu_mylocation"
-                    android:padding="4dp"
-                    android:background="#FDF2F8"
-                    android:layout_marginEnd="12dp"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Location"
-                        android:textColor="#1F2937"
-                        android:textStyle="bold"
-                        android:textSize="14sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Send your location in emergencies"
-                        android:textColor="#6B7280"
-                        android:textSize="12sp"/>
-                </LinearLayout>
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/tvPermLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Needed"
-                    android:textColor="#EF4444"
-                    android:textSize="12sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- Microphone Permission Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@android:drawable/ic_btn_speak_now"
-                    android:padding="4dp"
-                    android:background="#FDF2F8"
-                    android:layout_marginEnd="12dp"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Microphone"
-                        android:textColor="#1F2937"
-                        android:textStyle="bold"
-                        android:textSize="14sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Detect distress sounds with AI"
-                        android:textColor="#6B7280"
-                        android:textSize="12sp"/>
-                </LinearLayout>
+                    android:text="Required Permissions"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#2F2F2F"
+                    android:layout_marginBottom="4dp"/>
 
                 <TextView
-                    android:id="@+id/tvPermMic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Needed"
-                    android:textColor="#EF4444"
-                    android:textSize="12sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- SMS Permission Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@android:drawable/ic_dialog_email"
-                    android:padding="4dp"
-                    android:background="#FDF2F8"
-                    android:layout_marginEnd="12dp"/>
+                    android:text="SafeGuard needs these to protect you"
+                    android:textColor="#7A686B"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="16dp"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_dialog_map"
+                        android:padding="6dp"
+                        android:background="#FFF0F2"
+                        android:layout_marginEnd="12dp"
+                        app:tint="#9B4D64"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Location"
+                            android:textColor="#2F2F2F"
+                            android:textStyle="bold"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Send your location in emergencies"
+                            android:textColor="#7A686B"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
                     <TextView
+                        android:id="@+id/tvPermLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SMS"
-                        android:textColor="#1F2937"
-                        android:textStyle="bold"
-                        android:textSize="14sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Send emergency alerts to your contact"
-                        android:textColor="#6B7280"
-                        android:textSize="12sp"/>
+                        android:text="Needed"
+                        android:textColor="#EF4444"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvPermSMS"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Needed"
-                    android:textColor="#EF4444"
-                    android:textSize="12sp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_btn_speak_now"
+                        android:padding="6dp"
+                        android:background="#FFF0F2"
+                        android:layout_marginEnd="12dp"
+                        app:tint="#9B4D64"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Microphone"
+                            android:textColor="#2F2F2F"
+                            android:textStyle="bold"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Detect distress sounds with AI"
+                            android:textColor="#7A686B"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvPermMic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Needed"
+                        android:textColor="#EF4444"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_dialog_email"
+                        android:padding="6dp"
+                        android:background="#FFF0F2"
+                        android:layout_marginEnd="12dp"
+                        app:tint="#9B4D64"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SMS"
+                            android:textColor="#2F2F2F"
+                            android:textStyle="bold"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Send emergency alerts to your contact"
+                            android:textColor="#7A686B"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvPermSMS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Needed"
+                        android:textColor="#EF4444"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnGrantPermissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="#9B4D64"
+                    android:text="Grant Permissions"
+                    android:textColor="#FFFFFF"
                     android:textStyle="bold"/>
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnGrantPermissions"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/button_gradient"
-                android:text="Grant Permissions"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- Save Button -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSaveSetup"
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/button_gradient"
+            android:backgroundTint="#9B4D64"
             android:text="Save &amp; Continue"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:elevation="8dp"
-            android:layout_marginBottom="32dp"/>
+            android:elevation="4dp"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 </ScrollView>

@@ -1,167 +1,112 @@
 package com.example.safety_monitor;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-
-import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean isMonitoring = false;
-    private TextView tvStatus;
-    private View statusDot;
-    private Button btnStartStop;
-    private LinearLayout btnSOS;
+    private static final String TAG = "MainActivity";
+    private SharedPreferences sharedPreferences;
+    private TextView tvStatus, tvContactIndicator;
+    private Button btnToggleProtection;
+    private View btnInstantSOS;
+    private boolean isServiceRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Check Permissions on Startup
-        checkAndRequestPermissions();
+        sharedPreferences = getSharedPreferences("SafeGuardPrefs", Context.MODE_PRIVATE);
 
-        // 2. Connect UI Elements
+        // Priority 2 (Step 6): Enforce Google Sign-In and Setup Validation Sequence
+//        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+//            startActivity(new Intent(this, LoginActivity.class));
+//            finish();
+//            return;
+//        } else
+       if (!sharedPreferences.getBoolean("is_setup_complete", false)) {
+            startActivity(new Intent(this, SetupActivity.class));
+            finish();
+            return;
+        }
+
+        // Initialize Views with Safety Verifications
         tvStatus = findViewById(R.id.tvStatus);
-        statusDot = findViewById(R.id.statusDot);
-        btnStartStop = findViewById(R.id.btnStartService);
-        btnSOS = findViewById(R.id.btnSOS);
+        tvContactIndicator = findViewById(R.id.tvContactIndicator);
+        btnToggleProtection = findViewById(R.id.btnToggleProtection);
+        btnInstantSOS = findViewById(R.id.btnInstantSOS);
 
-        // 3. SOS Button Logic (The Big Red Circle)
-        btnSOS.setOnClickListener(v -> {
-            if (hasAllPermissions()) {
-                Toast.makeText(MainActivity.this, "SENDING EMERGENCY ALERT...", Toast.LENGTH_LONG).show();
-                // Trigger the service to send SMS immediately
+        // Priority 4 (Step 17): Live confirmation tracking of configured emergency contact metadata
+        String cName = sharedPreferences.getString("contact_name", "");
+        String cPhone = sharedPreferences.getString("emergency_phone", "");
+
+//        if (tvContactIndicator != null) {
+//            if (!cName.isEmpty() && !cPhone.isEmpty()) {
+//                tvContactIndicator.setText("Protected Contact: " + cName + " (" + cPhone + ")");
+//            } else {
+//                tvContactIndicator.setText("⚠️ WARNING: No Emergency Contact Set up!");
+//            }
+//        } else {
+//            Log.e(TAG, "CRITICAL ERROR: tvContactIndicator is missing from activity_main.xml");
+//        }
+
+        // Priority 2 (Step 5): Mapping Bottom Navigation Actions Safely
+        safelyBindNavigation(R.id.nav_alerts, AlertsActivity.class);
+        safelyBindNavigation(R.id.nav_contacts, ContactsActivity.class);
+        safelyBindNavigation(R.id.btn_profile, ProfileActivity.class);
+
+        // Safe binding for protection toggle button
+        if (btnToggleProtection != null) {
+            btnToggleProtection.setOnClickListener(v -> {
                 Intent serviceIntent = new Intent(MainActivity.this, SafetyService.class);
-                serviceIntent.setAction("ACTION_NOT_SAFE"); // Custom action we defined earlier
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(serviceIntent);
-                } else {
+                if (!isServiceRunning) {
                     startService(serviceIntent);
+                    if (tvStatus != null) tvStatus.setText("Status: Tracking Guard Active");
+                    btnToggleProtection.setText("STOP PROTECTION");
+                    isServiceRunning = true;
+                } else {
+                    stopService(serviceIntent);
+                    if (tvStatus != null) tvStatus.setText("Status: Inactive");
+                    btnToggleProtection.setText("START PROTECTION");
+                    isServiceRunning = false;
                 }
-            } else {
-                Toast.makeText(MainActivity.this, "Permissions needed for SOS!", Toast.LENGTH_SHORT).show();
-                checkAndRequestPermissions();
-            }
-        });
-
-        // 4. Start/Stop Protection Button Logic
-        btnStartStop.setOnClickListener(v -> {
-            if (!isMonitoring) {
-                // STARTING
-                if (checkSetupAndPermissions()) {
-                    startSafetyService();
-                    updateUI(true);
-                }
-            } else {
-                // STOPPING
-                stopSafetyService();
-                updateUI(false);
-            }
-        });
-    }
-
-    // --- UI HELPER: Update Colors & Text ---
-    private void updateUI(boolean active) {
-        isMonitoring = active;
-
-        if (active) {
-            tvStatus.setText("You're Protected");
-            tvStatus.setTextColor(Color.parseColor("#166534")); // Dark Green
-            btnStartStop.setText("Stop Protection");
-
-            // Change Dot to Green
-            Drawable background = statusDot.getBackground();
-            DrawableCompat.setTint(background, Color.parseColor("#22C55E")); // Bright Green
+            });
         } else {
-            tvStatus.setText("Not Protected");
-            tvStatus.setTextColor(Color.parseColor("#4B5563")); // Gray
-            btnStartStop.setText("Start Protection");
-
-            // Change Dot to Gray
-            Drawable background = statusDot.getBackground();
-            DrawableCompat.setTint(background, Color.parseColor("#9CA3AF")); // Gray
+            Log.e(TAG, "CRITICAL ERROR: btnToggleProtection is missing from activity_main.xml");
         }
-    }
 
-    // --- SERVICE HELPERS ---
-    private void startSafetyService() {
-        Intent serviceIntent = new Intent(this, SafetyService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent);
+        // Safe binding for instant SOS button
+        if (btnInstantSOS != null) {
+            btnInstantSOS.setOnClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, SafetyService.class);
+                intent.setAction(SafetyService.ACTION_NOT_SAFE);
+                startService(intent);
+                Toast.makeText(MainActivity.this, "Emergency Alert Signal Deployed!", Toast.LENGTH_SHORT).show();
+            });
         } else {
-            startService(serviceIntent);
+            Log.e(TAG, "CRITICAL ERROR: btnInstantSOS is missing from activity_main.xml");
         }
-        Toast.makeText(this, "Protection Activated", Toast.LENGTH_SHORT).show();
     }
 
-    private void stopSafetyService() {
-        Intent serviceIntent = new Intent(this, SafetyService.class);
-        stopService(serviceIntent);
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
-    }
-
-    // --- PERMISSION & SETUP CHECKS ---
-    private boolean checkSetupAndPermissions() {
-        // 1. Check if Phone Number is set
-        SharedPreferences prefs = getSharedPreferences("SafetyPrefs", MODE_PRIVATE);
-        String phone = prefs.getString("emergency_phone", "");
-
-        if (phone.isEmpty()) {
-            Toast.makeText(this, "Please set an Emergency Contact first!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            return false;
-        }
-
-        // 2. Check Android Permissions
-        if (!hasAllPermissions()) {
-            Toast.makeText(this, "Permissions required!", Toast.LENGTH_SHORT).show();
-            checkAndRequestPermissions();
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean hasAllPermissions() {
-        boolean location = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
-        boolean sms = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
-        return location && audio && sms;
-    }
-
-    private void checkAndRequestPermissions() {
-        if (!hasAllPermissions()) {
-            String[] permissions;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                permissions = new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.SEND_SMS,
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.POST_NOTIFICATIONS
-                };
-            } else {
-                permissions = new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.SEND_SMS,
-                        Manifest.permission.RECORD_AUDIO
-                };
-            }
-            ActivityCompat.requestPermissions(this, permissions, 100);
+    /**
+     * Safely binds navigation buttons to prevent null pointer crashes if IDs are missing from the XML.
+     */
+    private void safelyBindNavigation(int viewId, Class<?> targetActivity) {
+        View targetView = findViewById(viewId);
+        if (targetView != null) {
+            targetView.setOnClickListener(v -> startActivity(new Intent(this, targetActivity)));
+        } else {
+            Log.w(TAG, "Warning: View ID " + viewId + " not found in activity_main.xml layout template.");
         }
     }
 }

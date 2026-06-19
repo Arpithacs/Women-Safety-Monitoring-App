@@ -1,47 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFF0F2"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:padding="28dp"
+    android:gravity="center_horizontal">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Safety Monitor Setup"
-        android:textSize="24sp"
+        android:text="SafeGuard"
+        android:textSize="34sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp"/>
+        android:textColor="#9B4D64"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stay Safe. Stay Connected."
+        android:textSize="15sp"
+        android:textColor="#7A686B"
+        android:layout_marginBottom="40dp"/>
 
     <EditText
-        android:id="@+id/etName"
+        android:id="@+id/etLoginEmail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Your Full Name"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="54dp"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:background="@android:drawable/editbox_background"
+        android:paddingLeft="16dp"
+        android:layout_marginBottom="14dp"/>
 
     <EditText
-        android:id="@+id/etBloodType"
+        android:id="@+id/etLoginPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Blood Type (Optional)"
-        android:layout_marginBottom="16dp"/>
-
-    <EditText
-        android:id="@+id/etEmergencyContact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Emergency Phone Number"
-        android:inputType="phone"
-        android:layout_marginBottom="24dp"/>
+        android:layout_height="54dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:background="@android:drawable/editbox_background"
+        android:paddingLeft="16dp"
+        android:layout_marginBottom="20dp"/>
 
     <Button
-        android:id="@+id/btnSaveProfile"
+        android:id="@+id/btnFormalLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Sign In"
+        android:backgroundTint="#9B4D64"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvSwitchToRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Sign Up"
+        android:textColor="#9B4D64"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        android:padding="8dp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save &amp; Continue"
-        android:backgroundTint="#000000"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="32dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#D1C4C6"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  OR  "
+            android:textColor="#7A686B"
+            android:textSize="12sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#D1C4C6"/>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnGoogleSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Continue with Google"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#2F2F2F"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_google_logo"
+        android:drawablePadding="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:elevation="2dp"
+        android:layout_marginBottom="24dp"/>
 
 </LinearLayout>
+</ScrollView>
