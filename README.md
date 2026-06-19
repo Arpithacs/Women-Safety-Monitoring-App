@@ -38,6 +38,21 @@ The Women Safety Monitoring App is a dedicated safety solution that empowers wom
 - **Data Privacy Controls** - Full control over shared information
 - **No Data Selling** - Your data is never sold to third parties
 
+## 📱 Screenshots
+
+### Core Application Interfaces
+<p align="center">
+  <img src="screenshots/Home.jpg" width="30%" alt="Home Dashboard" />
+  <img src="screenshots/Contacts.jpg" width="30%" alt="Emergency Contacts" />
+  <img src="screenshots/profile.jpg" width="30%" alt="User Profile Settings" />
+</p>
+
+### Alert Feed & Real-Time Functionality
+<p align="center">
+  <img src="screenshots/Alerts.jpg" width="45%" alt="Alert Logs" />
+  <img src="screenshots/Real time message.jpg" width="45%" alt="SOS Live Emergency Message" />
+</p>
+
 ## 🛠️ Technology Stack
 
 - **Language**: Java
